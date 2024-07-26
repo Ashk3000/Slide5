@@ -1,4 +1,3 @@
-
 import java.awt.*;
 
 /**
@@ -9,6 +8,16 @@ public class Tile {
 
 	public enum Piece {
 		WHITE, BLACK, NOTHING // BLACK: X, green; WHITE: O, pink; NOTHING: no piece, no winner
+	}
+
+	public static Piece togglePiece(Piece piece) {
+		if (piece == Piece.WHITE) {
+			return Piece.BLACK;
+		} else if (piece == Piece.BLACK) {
+			return Piece.WHITE;
+		} else {
+			return Piece.NOTHING;
+		}
 	}
 
 	public Piece piece;
@@ -31,10 +40,18 @@ public class Tile {
 		this.y = y;
 	}
 
+	public Tile clone(Board board) {
+		Tile outputTile = new Tile(x, y, board);
+		outputTile.setPiece(piece);
+		return outputTile;
+	}
+
 	public void setPiece(Piece piece) {
 		this.piece = piece;
 
-		board.repaint();
+		if (board != null) {
+			board.repaint();
+		}
 	}
 
 	public void draw(Graphics2D g2) {
