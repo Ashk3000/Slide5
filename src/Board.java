@@ -284,7 +284,7 @@ public class Board extends JComponent {
 		if (playerPiece == Tile.Piece.BLACK) {
 			int minIndex = 0;
 			for (int pathIndex = 0; pathIndex <= 9; pathIndex++) {
-				if (paths[pathIndex] <= paths[minIndex]) {
+				if (paths[pathIndex] < paths[minIndex]) {
 					minIndex = pathIndex;
 				}
 			}

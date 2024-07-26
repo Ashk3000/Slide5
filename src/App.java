@@ -145,9 +145,8 @@ public class App {
 
             if (currentPiece == Tile.Piece.BLACK) { 
                 System.out.println("X's turn");
-                //int spot = getSpotButton(scanner, buttons); // user turn
-                //spotToMove(spot, board, currentPiece);
-                spotToMove(board.bestMove(currentPiece, 6), board, currentPiece); // bot turn
+                int spot = getSpotButton(scanner, buttons); // user turn
+                spotToMove(spot, board, currentPiece);
 
             } else if (currentPiece == Tile.Piece.WHITE) { 
                 System.out.println("O's turn");
