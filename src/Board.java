@@ -284,8 +284,7 @@ public class Board extends JComponent {
 		if (playerPiece == Tile.Piece.BLACK) {
 			int minIndex = 0;
 			for (int pathIndex = 0; pathIndex <= 9; pathIndex++) {
-                System.out.println(pathIndex+", "+paths[pathIndex]);
-				if (paths[pathIndex] < paths[minIndex]) {
+				if (paths[pathIndex] <= paths[minIndex]) {
 					minIndex = pathIndex;
 				}
 			}
@@ -293,7 +292,6 @@ public class Board extends JComponent {
 		} else {
 			int maxIndex = 0;
 			for (int pathIndex = 0; pathIndex <= 9; pathIndex++) {
-                System.out.println(pathIndex+", "+paths[pathIndex]);
 				if (paths[pathIndex] > paths[maxIndex]) {
 					maxIndex = pathIndex;
 				}
@@ -304,16 +302,19 @@ public class Board extends JComponent {
 
     static int minimax(Tile.Piece playerPiece, int depth, Tile[][] board) { // evaluates the best move
 		Tile.Piece otherPlayerPiece = Tile.togglePiece(playerPiece);
-		//System.out.println(depth);
 
         if (depth == 0) {
-            return evaluate(board);
+            return evaluate(board, playerPiece);
         }
 
         boolean[] winCheck = winCheck(board);
 
-		if (winCheck[0] && winCheck[1]) { // Tie
-            return 0;
+		if (winCheck[0] && winCheck[1]) { // If both have connections whoever caused it wins
+            if (playerPiece == Tile.Piece.BLACK) {
+                return -10;
+            } else {
+                return 10;
+            }
         }
 
         if (winCheck[0]) { // Black win
@@ -361,11 +362,11 @@ public class Board extends JComponent {
      *
      * @return A scale indicating whos winning -10 (black) to 10 (white)
      */
-    public int evaluate() {
-        return evaluate(board);
+    public int evaluate(Tile.Piece playerPiece) {
+        return evaluate(board, playerPiece);
     }
 
-    static int evaluate(Tile[][] board) {
+    static int evaluate(Tile[][] board, Tile.Piece playerPiece) {
 
         boolean[] winCheck = winCheck(board);
 
@@ -382,6 +383,11 @@ public class Board extends JComponent {
             return longestChain[1] - longestChain[0]; // -4 to 4 (-5 or 5 would result in a win)
         }
 
-        return 0; // Both win
+        // If both have connections whoever caused it wins
+        if (playerPiece == Tile.Piece.BLACK) {
+            return -10;
+        } else {
+            return 10;
+        }
     }
 }

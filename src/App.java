@@ -75,23 +75,26 @@ public class App {
         return output[0];
     }
 
-    public static boolean winCheck(Board board) { // returns true if the game has ended, and prints a message
+    public static boolean winCheck(Board board, Tile.Piece currentPiece) { // returns true if the game has ended, and prints a message
         boolean[] winningPieces = board.winCheck();
 
         if (winningPieces[0] && winningPieces[1]) {
             board.print();
-            System.out.println("Its a tie!");
-            // return Tile.Piece.NOTHING;
+            if (winningPieces[0]) {
+                System.out.println("X wins!");
+                return true;
+            } else if (winningPieces[1]) {
+                System.out.println("O wins!");
+                return true;
+            }
             return true;
         } else if (winningPieces[0]) {
             board.print();
             System.out.println("X wins!");
-            // return Tile.Piece.BLACK;
             return true;
         } else if (winningPieces[1]) {
             board.print();
             System.out.println("O wins!");
-            // return Tile.Piece.WHITE;
             return true;
         }
         return false;
@@ -113,6 +116,8 @@ public class App {
             button.setBounds(xPos, yPos, 50, 50);
 
             panel.add(button, Integer.valueOf((int) y));
+
+            button.setEnabled(false);
 
             button.repaint();
         }
@@ -140,8 +145,9 @@ public class App {
 
             if (currentPiece == Tile.Piece.BLACK) { 
                 System.out.println("X's turn");
-                int spot = getSpotButton(scanner, buttons); // user turn
-                spotToMove(spot, board, currentPiece);
+                //int spot = getSpotButton(scanner, buttons); // user turn
+                //spotToMove(spot, board, currentPiece);
+                spotToMove(board.bestMove(currentPiece, 6), board, currentPiece); // bot turn
 
             } else if (currentPiece == Tile.Piece.WHITE) { 
                 System.out.println("O's turn");
@@ -149,7 +155,7 @@ public class App {
             }
 
 
-            if (winCheck(board)) {
+            if (winCheck(board, currentPiece)) {
                 return;
             }
 
